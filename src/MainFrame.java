@@ -1,6 +1,10 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 
 public class MainFrame extends JFrame {
     private JTextField textField1;
@@ -9,6 +13,12 @@ public class MainFrame extends JFrame {
     private JLabel lbAns;
     private JPanel mainPanel;
 
+    public static boolean test (String word){
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(word);
+        return matcher.matches();
+    }
+
     public MainFrame(){
         setContentPane(mainPanel);
         setTitle("Main");
@@ -16,11 +26,16 @@ public class MainFrame extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String email = textField1.getText();
-                lbAns.setText("Welcome "+email);
+                if (test(email)){
+                    lbAns.setText(email + " is correct");
+                }else{
+                    lbAns.setText(email + " is wrong");
+                }
             }
         });
 
@@ -31,6 +46,7 @@ public class MainFrame extends JFrame {
                 textField1.setText("");
             }
         });
+
     }
 
     public static void main(String[] args) {
